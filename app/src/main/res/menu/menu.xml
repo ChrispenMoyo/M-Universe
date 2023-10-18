@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title=""
+        android:textColor="@color/white"
+        android:fontFamily="@font/my_converge_font"/>
+
+    <item
+        android:id="@+id/nav_communities"
+        android:icon="@drawable/ic_comm"
+        android:title=""
+        android:textColor="@color/white"
+        android:fontFamily="@font/my_converge_font"/>
+
+    <item
+        android:id="@+id/nav_add"
+        android:icon="@drawable/ic_add"
+        android:title=""
+        android:textColor="@color/white"
+        android:fontFamily="@font/my_converge_font"/>
+
+    <item
+        android:id="@+id/nav_notifications"
+        android:icon="@drawable/ic_notifications"
+        android:title=""
+        android:textColor="@color/white"
+        android:fontFamily="@font/my_converge_font"/>
+
+    <item
+        android:id="@+id/nav_chat"
+        android:icon="@drawable/ic_message"
+        android:title=""
+        android:textColor="@color/white"
+        android:fontFamily="@font/my_converge_font"/>
+
+</menu>

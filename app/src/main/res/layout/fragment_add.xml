@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".AddFragment">
+
+    <!-- User's Profile Picture -->
+    <ImageView
+        android:id="@+id/profileImageView"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_profile2"
+        tools:ignore="ContentDescription,ImageContrastCheck" />
+
+    <!-- User's Username -->
+    <TextView
+        android:id="@+id/usernameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/profileImageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="@string/yourusername"
+        android:fontFamily="@font/convergences"
+        android:textSize="16sp" />
+
+    <!-- Text Input Field -->
+    <EditText
+        android:id="@+id/pdes"
+        android:layout_width="378dp"
+        android:layout_height="146dp"
+        android:layout_below="@id/usernameTextView"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/convergences"
+        android:gravity="start"
+        android:hint="@string/what_s_on_your_mind"
+        android:inputType="textMultiLine"
+        android:minLines="3"
+        android:padding="8dp"
+        android:textColorHint="#8D6E63"
+        android:textSize="16sp"
+        tools:ignore="Autofill" />
+
+    <!-- ImageView for Image Attachment -->
+    <ImageView
+        android:id="@+id/imagep"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/pdes"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_attach"
+        tools:ignore="ContentDescription,ImageContrastCheck,SpeakableTextPresentCheck" />
+
+    <!-- Button to Post -->
+    <Button
+        android:id="@+id/pupload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imagep"
+        android:layout_marginTop="16dp"
+        android:text="@string/post"
+        android:fontFamily="@font/convergences"
+        android:padding="8dp"
+
+        android:textColor="#FFFFFF"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

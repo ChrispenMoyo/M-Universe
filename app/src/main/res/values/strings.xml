@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">M-Universe</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login">LOGIN</string>
+    <string name="clear">CLEAR</string>
+    <string name="password">Password</string>
+    <string name="marwadi_email_id">Marwadi Email ID</string>
+    <string name="forget_password">Forget Password?</string>
+    <string name="new_to_muniverse_create_an_account">New to MUniverse? Create an Account.</string>
+    <string name="register">REGISTER</string>
+    <string name="gr_number">GR Number</string>
+    <string name="user_name">User Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="yourusername">YourUsername</string>
+    <string name="what_s_on_your_mind">What\'s on your mind?</string>
+    <string name="post">Post</string>
+</resources>

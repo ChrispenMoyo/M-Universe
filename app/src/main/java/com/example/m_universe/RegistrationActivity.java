@@ -89,6 +89,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     public void onBackPressed() {
+        super.onBackPressed();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
         builder.setMessage("Do you want to Exit?");
@@ -145,14 +146,15 @@ public class RegistrationActivity extends AppCompatActivity {
                     String email = user.getEmail();
                     String uid = user.getUid();
                     HashMap<Object, String> hashMap = new HashMap<>();
-                    hashMap.put("email", email);
+                    hashMap.put("email", email1);
+                    hashMap.put("uid", uid);
                     hashMap.put("gr num", gr_num);
                     hashMap.put("username", userid);
                     hashMap.put("image", "");
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference reference = database.getReference("Users");
                     reference.child(uid).setValue(hashMap);
-                    Toast.makeText(RegistrationActivity.this, "Registered User " + user.getEmail(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegistrationActivity.this, "Registered User " + user.getUid(), Toast.LENGTH_LONG).show();
                     Intent mainIntent = new Intent(RegistrationActivity.this, DashboardActivity.class);
                     mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(mainIntent);

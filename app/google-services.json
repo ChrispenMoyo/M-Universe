@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "787788652412",
+    "firebase_url": "https://m-universe-default-rtdb.firebaseio.com",
     "project_id": "m-universe",
     "storage_bucket": "m-universe.appspot.com"
   },

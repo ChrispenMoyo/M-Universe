@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     progressDialog.dismiss();
                     sendUserToNextActivity();
-                    Toast.makeText(LoginActivity.this,"" + task.getException(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this,"Welcome " + task.getException(), Toast.LENGTH_LONG).show();
                 }
                 else {
                     progressDialog.dismiss();

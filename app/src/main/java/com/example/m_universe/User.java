@@ -5,16 +5,19 @@ public class User {
     private String email;
     private String userId;
 
+    private String uname;
+
     // Default constructor (required for Firebase)
     public User() {
         // Default constructor required for Firebase
     }
 
     // Parameterized constructor
-    public User(String grNum, String email, String userId) {
+    public User(String grNum, String email, String userId, String uname) {
         this.grNum = grNum;
         this.email = email;
         this.userId = userId;
+        this.uname = uname;
     }
 
     public String getGrNum() {
@@ -33,5 +36,11 @@ public class User {
         return userId;
     }
 
-    public void setUserId(String userId) { this.email = email;}
+    public void setUserId(String userId) { this.userId = userId;}
+
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String uname) { this.uname = uname;}
 }

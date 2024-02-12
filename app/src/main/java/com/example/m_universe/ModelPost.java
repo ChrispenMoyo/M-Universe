@@ -96,7 +96,27 @@ public class ModelPost {
         this.pcomments = pcomments;
     }
 
-    public ModelPost(String description, String pid, String ptime, String pcomments, String udp, String uemail, String uid, String uimage, String uname, String plike) {
+    // New fields for reposts and share
+    String p_reposts;
+    String pshare;
+
+    public String getP_reposts() {
+        return p_reposts;
+    }
+
+    public void setP_reposts(String p_reposts) {
+        this.p_reposts = p_reposts;
+    }
+
+    public String getPshare() {
+        return pshare;
+    }
+
+    public void setPshare(String pshare) {
+        this.pshare = pshare;
+    }
+
+    public ModelPost(String description, String pid, String ptime, String pcomments, String udp, String uemail, String uid, String uimage, String uname, String plike, String p_reposts, String pshare) {
         this.description = description;
         this.pid = pid;
         this.ptime = ptime;
@@ -108,6 +128,8 @@ public class ModelPost {
         this.uimage = uimage;
         this.uname = uname;
         this.plike = plike;
+        this.p_reposts = p_reposts;
+        this.pshare = pshare;
     }
 
     String ptime, pcomments;
@@ -120,5 +142,4 @@ public class ModelPost {
     String uimage;
 
     String uname, plike;
-
 }

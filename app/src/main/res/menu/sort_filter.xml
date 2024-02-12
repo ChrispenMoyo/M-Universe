@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/sort_1"
+        android:title="All Posts" />
+    <item
+        android:id="@+id/sort_2"
+        android:title="Following" />
+    <item
+        android:id="@+id/sort_3"
+        android:title="Recent" />
+    <item
+        android:id="@+id/sort_4"
+        android:title="Old Posts" />
+</menu>

@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,7 +29,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements NavigationBarView.OnItemSelectedListener{
 
     FirebaseAuth firebaseAuth;
     String myuid;
@@ -56,33 +57,6 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-//    private void loadPosts() {
-//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                posts.clear();
-//                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-//                    ModelPost modelPost = dataSnapshot1.getValue(ModelPost.class);
-//                    if (modelPost != null) {
-//                        posts.add(modelPost);
-//                    } else {
-//                        Log.e("HomeFragment", "Failed to parse post data");
-//                    }
-//                }
-//                adapterPosts.notifyDataSetChanged(); // Notify adapter of dataset change
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.e("HomeFragment", "Database error: " + databaseError.getMessage());
-//                Toast.makeText(getActivity(), "Failed to load posts", Toast.LENGTH_LONG).show();
-//            }
-//        });
-//    }
-
-
-    // the second one
 
     private void loadPosts() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
@@ -99,7 +73,8 @@ public class HomeFragment extends Fragment {
                     adapterPosts = new AdapterPosts(getActivity(), posts);
                     recyclerView.setAdapter(adapterPosts);
                 } else {
-                    adapterPosts.notifyDataSetChanged(); // Line 73
+                    // Line 73
+                    adapterPosts.notifyDataSetChanged();
                 }
                 // Update the adapter after the loop
 //                adapterPosts = new AdapterPosts(getActivity(), posts);
@@ -113,29 +88,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-// the original
-
-//    private void loadPosts() {
-//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                posts.clear();
-//                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-//                    ModelPost modelPost = dataSnapshot1.getValue(ModelPost.class);
-//                    posts.add(modelPost);
-//                    adapterPosts = new AdapterPosts(getActivity(), posts);
-//                    recyclerView.setAdapter(adapterPosts);
-//                }
-//            }
-
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                Toast.makeText(getActivity(), databaseError.getMessage(), Toast.LENGTH_LONG).show();
-//            }
-//        });
-//    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -143,4 +95,8 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
+    }
 }

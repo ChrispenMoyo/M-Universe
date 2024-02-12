@@ -1,0 +1,109 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#F1EDED"
+    tools:context=".Profile">
+
+    <ImageView
+        android:id="@+id/cavertv"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@color/main_blue"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/avatartv"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="20dp"
+        android:background="@color/white"
+        android:padding="5dp"
+        app:layout_constraintStart_toStartOf="@+id/cavertv"
+        app:layout_constraintTop_toTopOf="@+id/cavertv"
+        app:layout_constraintBottom_toBottomOf="@+id/cavertv"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Material3.CornerSizeFull" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="#77000000"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@+id/avatartv"
+        app:layout_constraintTop_toTopOf="@+id/cavertv"
+        app:layout_constraintBottom_toBottomOf="@+id/cavertv"
+        app:layout_constraintEnd_toEndOf="@+id/cavertv">
+
+        <TextView
+            android:id="@+id/nametv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/white"
+            android:text="Username"
+            android:fontFamily="@font/convergences"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/emailtv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:fontFamily="@font/convergences"
+            android:text="GR Number"
+            android:textColor="@color/main_blue"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/followers_count_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/white"
+            android:text="2 Followers"
+            android:fontFamily="@font/convergences"/>
+
+        <TextView
+            android:id="@+id/following_count_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/white"
+            android:text="2 Following "
+            android:fontFamily="@font/convergences"/>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_edit"
+        android:contentDescription="Edit profile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

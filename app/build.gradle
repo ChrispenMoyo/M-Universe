@@ -54,6 +54,10 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation "androidx.activity:activity:1.8.2"
     implementation "androidx.fragment:fragment:1.6.2"
+    implementation platform('com.google.firebase:firebase-bom:29.2.0')
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'pub.devrel:easypermissions:3.0.0'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
 
 //    classpath 'com.google.gms:google-services:4.3.10'
 

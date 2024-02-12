@@ -50,7 +50,7 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
 
         // Initialize Firebase
-        //  firebaseApp.initializeApp(this);
+        //firebaseApp.initializeApp(this);
 
         // Create a DatabaseReference to the "users" node in your database
         // DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("User");
@@ -110,7 +110,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private void performAuth() {
         String gr_num = et_gr_num.getText().toString();
         String email1 = et_email.getText().toString();
-        String userid = et_username.getText().toString();
+        String uname = et_username.getText().toString();
         String pass1 = et_password.getText().toString();
         String confirm = confirm_et.getText().toString();
 
@@ -129,47 +129,42 @@ public class RegistrationActivity extends AppCompatActivity {
             progressDialog.setTitle("Registration");
             progressDialog.setCanceledOnTouchOutside(false);
 
-            saveUserDataToDatabase(gr_num, email1, userid, pass1);
+            saveUserDataToDatabase(gr_num, email1, uname, pass1);
         }
 
     }
 
-    private void saveUserDataToDatabase(String gr_num, String email1, String userid, String pass1) {
+    private void saveUserDataToDatabase(String gr_num, String email1,final String uname, final String pass1) {
 
         progressDialog.show();
-        mAuth.createUserWithEmailAndPassword(email1, pass1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    progressDialog.dismiss();
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    String email = user.getEmail();
-                    String uid = user.getUid();
-                    HashMap<Object, String> hashMap = new HashMap<>();
-                    hashMap.put("email", email1);
-                    hashMap.put("uid", uid);
-                    hashMap.put("gr num", gr_num);
-                    hashMap.put("username", userid);
-                    hashMap.put("image", "");
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference reference = database.getReference("Users");
-                    reference.child(uid).setValue(hashMap);
-                    Toast.makeText(RegistrationActivity.this, "Registered User " + user.getUid(), Toast.LENGTH_LONG).show();
-                    Intent mainIntent = new Intent(RegistrationActivity.this, DashboardActivity.class);
-                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(mainIntent);
-                    finish();
-                } else {
-                    progressDialog.dismiss();
-                    Toast.makeText(RegistrationActivity.this, "Error", Toast.LENGTH_LONG).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+        mAuth.createUserWithEmailAndPassword(email1, pass1).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
                 progressDialog.dismiss();
-                Toast.makeText(RegistrationActivity.this, "Error Occurred", Toast.LENGTH_LONG).show();
+                FirebaseUser user = mAuth.getCurrentUser();
+                String email = user.getEmail();
+                String uid = user.getUid();
+                HashMap<Object, String> hashMap = new HashMap<>();
+                hashMap.put("email", email1);
+                hashMap.put("uid", uid);
+                hashMap.put("gr num", gr_num);
+                hashMap.put("uname", uname);
+                hashMap.put("image", "");
+//                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+//                    DatabaseReference reference = database.getReference("Users");
+                DatabaseReference reference = firebaseDatabase.getReference("Users");
+                reference.child(uid).setValue(hashMap);
+                Toast.makeText(RegistrationActivity.this, "Registered User " + user.getEmail(), Toast.LENGTH_LONG).show();
+                Intent mainIntent = new Intent(RegistrationActivity.this, DashboardActivity.class);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(mainIntent);
+                finish();
+            } else {
+                progressDialog.dismiss();
+                Toast.makeText(RegistrationActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
             }
+        }).addOnFailureListener(e -> {
+            progressDialog.dismiss();
+            Toast.makeText(RegistrationActivity.this, "Error Occurred: " + e.getMessage(), Toast.LENGTH_LONG).show();
         });
     }
 }

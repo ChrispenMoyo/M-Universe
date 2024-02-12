@@ -64,7 +64,14 @@ public class ProfileFragment extends Fragment {
         nam = view.findViewById(R.id.nametv);
         email = view.findViewById(R.id.emailtv);
         fab = view.findViewById(R.id.fab);
-        pd = new ProgressBar(getActivity());
+        pd = view.findViewById(R.id.progressBar); // get a reference to the ProgressBar
+
+        // On click we will open EditProfileActivity
+        fab.setOnClickListener(v -> startActivity(new Intent(getActivity(), EditProfilePage.class)));
+
+        // Show the ProgressBar while loading the data
+        pd.setVisibility(View.VISIBLE);
+        //pd = new ProgressBar(getActivity());
        // pd.setCanceledOnTouchOutside(false);
         Query query = databaseReference.orderByChild("email").equalTo(firebaseUser.getEmail());
 
@@ -73,7 +80,7 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     // Retrieving Data from firebase
-                    String name = "" + dataSnapshot1.child("name").getValue();
+                    String name = "" + dataSnapshot1.child("uname").getValue();
                     String emaill = "" + dataSnapshot1.child("email").getValue();
                     String image = "" + dataSnapshot1.child("image").getValue();
                     // setting data to our text view
@@ -85,6 +92,8 @@ public class ProfileFragment extends Fragment {
 
                     }
                 }
+                // Hide the ProgressBar when the data has been loaded
+                pd.setVisibility(View.GONE);
             }
 
             @Override
@@ -93,8 +102,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // On click we will open EditProfileActivity
-        fab.setOnClickListener(v -> startActivity(new Intent(getActivity(), EditProfilePage.class)));
+
         return view;
     }
 

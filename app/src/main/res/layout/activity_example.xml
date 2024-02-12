@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
-<!--Like -->
+            <!--Like -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
 
             </LinearLayout>
 
-<!-- Comment -->
+            <!-- Comment -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -137,8 +137,9 @@
                         android:id="@+id/comment"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:src="@drawable/ic_comment"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/ic_comment" />
+                        android:layout_alignParentStart="true"/>
 
                     <TextView
                         android:id="@+id/commentCount"
@@ -153,7 +154,7 @@
 
             </LinearLayout>
 
-<!-- Repost -->
+            <!-- Repost -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -189,7 +190,7 @@
 
             </LinearLayout>
 
-<!-- Share -->
+            <!-- Share -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

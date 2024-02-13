@@ -1,5 +1,6 @@
 package com.example.m_universe;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +42,29 @@ public class HomeFragment extends Fragment implements NavigationBarView.OnItemSe
         // Required empty public constructor
     }
 
+    private void loadPosts() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                posts.clear();
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    ModelPost modelPost = dataSnapshot1.getValue(ModelPost.class);
+                    posts.add(modelPost);
+                }
+
+                // Update the adapter after the loop
+                adapterPosts.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getActivity(), databaseError.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -54,38 +78,12 @@ public class HomeFragment extends Fragment implements NavigationBarView.OnItemSe
         recyclerView.setLayoutManager(layoutManager);
         posts = new ArrayList<>();
         loadPosts();
+
+        // Initialize the adapterPosts only once
+        adapterPosts = new AdapterPosts(getActivity(), posts);
+        recyclerView.setAdapter(adapterPosts);
+
         return view;
-    }
-
-
-    private void loadPosts() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                posts.clear();
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    ModelPost modelPost = dataSnapshot1.getValue(ModelPost.class);
-                    posts.add(modelPost);
-                }
-
-                if (adapterPosts == null) {
-                    adapterPosts = new AdapterPosts(getActivity(), posts);
-                    recyclerView.setAdapter(adapterPosts);
-                } else {
-                    // Line 73
-                    adapterPosts.notifyDataSetChanged();
-                }
-                // Update the adapter after the loop
-//                adapterPosts = new AdapterPosts(getActivity(), posts);
-//                recyclerView.setAdapter(adapterPosts);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), databaseError.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
 

@@ -241,7 +241,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclecomment"
             android:layout_width="match_parent"
-            android:layout_height="174dp"
+            android:layout_height="26dp"
             android:layout_marginTop="8dp" />
 
         <!-- Comments Input Section -->
@@ -279,9 +279,9 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="8dp"
                 android:background="@color/white"
-                android:src="@drawable/send_message"
+                android:contentDescription="Send Comment"
                 android:padding="8dp"
-                android:contentDescription="Send Comment" />
+                android:src="@drawable/send_message" />
 
 
         </RelativeLayout>

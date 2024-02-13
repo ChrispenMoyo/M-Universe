@@ -388,6 +388,7 @@ public class AddFragment extends Fragment {
                 hashMap.put("description", description);
                 hashMap.put("uimage", downloadUri);
                 hashMap.put("ptime", timestamp);
+                hashMap.put("pid", timestamp);
                 hashMap.put("plike", "0");
                 hashMap.put("pcomments", "0");
                 hashMap.put("p_reposts", "0");

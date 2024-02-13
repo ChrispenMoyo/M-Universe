@@ -85,6 +85,8 @@ public class ModelPost {
     public void setPlike(String plike) {
         this.plike = plike;
     }
+    // ...
+    String  plike;
 
     String pid;
 
@@ -141,5 +143,5 @@ public class ModelPost {
     String uid;
     String uimage;
 
-    String uname, plike;
+    String uname;
 }

@@ -13,5 +13,6 @@ public class Post {
         this.title = title;
         this.content = content;
         this.username = username;
+
     }
 }

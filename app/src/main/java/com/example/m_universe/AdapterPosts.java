@@ -68,7 +68,7 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
 
     
 
-    List<ModelPost> modelPosts;
+    static List<ModelPost> modelPosts;
 
     @NonNull
     @Override
@@ -92,7 +92,8 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
         String comm = modelPosts.get(position).getPcomments();
         final String pid = modelPosts.get(position).getPid();
         final ModelPost post = modelPosts.get(position);
-        post.setPid(modelPosts.get(position).getPtime());
+//        Long plike = post.getPlike();
+//        post.setPlike(plike);
 
         if (ptime != null && !ptime.isEmpty())
         {
@@ -103,11 +104,43 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
 //        holder.title.setText(titlee);
             holder.description.setText(descri);
             holder.time.setText(timedate);
-            holder.like.setText(plike);
+            holder.like.setText(String.valueOf(plike));
             holder.comments.setText(comm);
             String postid = liekeref.getRef().getKey();
             DatabaseReference postref = FirebaseDatabase.getInstance().getReference().child("Posts").child(postid);
-            holder.setLikes(position, postid, holder.like, holder.likebtn);
+            //holder.setLikes(0, postid, holder.like, holder.likebtn);
+
+            //Textview to show shares count
+            holder.shares.setText(String.valueOf(modelPosts.get(position).getPshare()));
+            //more button
+            holder.more.setOnClickListener(v -> showMoreOptions(holder.more, myuid, ptime));
+            //comment button
+            holder.comment.setOnClickListener(v -> {
+                Intent intent = new Intent(context, PostDetailsActivity.class);
+                intent.putExtra("pid", ptime);
+                context.startActivity(intent);
+            });
+            //share button
+            holder.share_btn.setOnClickListener(v -> {
+                // Create the Intent
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                // Add the post data to the Intent
+                String shareBody = "Check this out : " + descri + "\n";
+                intent.putExtra(Intent.EXTRA_TEXT, shareBody);
+                // Start the activity
+                context.startActivity(intent.createChooser(intent, "Share using ... "));
+
+                // Add the share to the Shares node
+                String postId = post.getPid();
+                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DatabaseReference sharesRef = FirebaseDatabase.getInstance().getReference().child("Shares");
+                Shares shares = new Shares(postId, userId);
+                sharesRef.push().setValue(shares);
+
+                // Increment the share count of the post
+                updateShareCount(postId);
+            });
         }
 
         try {
@@ -127,128 +160,67 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
             intent.putExtra("pid", pid);
             holder.itemView.getContext().startActivity(intent);
         });
-//        holder.likebtn.setOnClickListener(v -> {
-//            final int plike1 = Integer.parseInt(modelPosts.get(position).getPlike());
-//            mprocesslike = true;
-//            final String postid = modelPosts.get(position).getPtime();
-//            liekeref.addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                    if (mprocesslike) {
-//                        if (dataSnapshot.child(postid).hasChild(myuid)) {
-//                            // User has already liked this post, so unlike it
-//                            postref.child(postid).child("plike").runTransaction(new Transaction.Handler() {
-//                                @NonNull
-//                                @Override
-//                                public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-//                                    // Decrement the like count
-//                                    Object currentLikes = mutableData.getValue(Long.class);
-//                                    if (currentLikes != null) {
-//                                        mutableData.setValue((Long) currentLikes - 1);
-//                                    }
-//                                    return Transaction.success(mutableData);
-//                                }
-//
-//                                @Override
-//                                public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
-//                                    if (b) {
-//                                        // Update the like button to grey color
-//                                        holder.likebtn.setImageResource(R.drawable.ic_like2);
-//                                        holder.like.setText(String.valueOf(plike1 - 1));
-//                                    }
-//                                }
-//                            });
-//                            liekeref.child(postid).child(myuid).removeValue();
-//                        } else {
-//                            // User has not yet liked this post, so like it
-//                            postref.child(postid).child("plike").runTransaction(new Transaction.Handler() {
-//                                @NonNull
-//                                @Override
-//                                public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-//                                    // Increment the like count
-//                                    Object currentLikes = mutableData.getValue(Long.class);
-//                                    if (currentLikes != null) {
-//                                        mutableData.setValue((Long) currentLikes + 1);
-//                                    }
-//                                    return Transaction.success(mutableData);
-//                                }
-//
-//                                @Override
-//                                public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
-//                                    if (b) {
-//                                        // Update the like button to blue color
-//                                        holder.likebtn.setImageResource(R.drawable.ic_like);
-//                                        holder.like.setText(String.valueOf(plike1 + 1));
-//                                    }
-//                                }
-//                            });
-//                        }
-//                        mprocesslike = false;
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                }
-//            });
-//        });
 
-        //share button
+        //more button
+        //holder.more.setOnClickListener(v -> showMoreOptions(holder.more, myuid, ptime));
         //like button
-        holder.likebtn.setOnClickListener(v -> likepost(pid, String.valueOf(plike)));
-        holder.share_btn.setOnClickListener(v -> {
-            // Create the Intent
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
-            // Add the post data to the Intent
-            String shareBody = "Check this out : " + descri + "\n";
-            intent.putExtra(Intent.EXTRA_TEXT, shareBody);
-            // Start the activity
-            context.startActivity(intent.createChooser(intent, "Share using ... "));
-
-            // Add the share to the Shares node
-            String postId = post.getPid();
-            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference sharesRef = FirebaseDatabase.getInstance().getReference().child("Shares");
-            Shares shares = new Shares(postId, userId);
-            sharesRef.push().setValue(shares);
-
-            // Increment the share count of the post
-            DatabaseReference postRef = FirebaseDatabase.getInstance().getReference().child("Posts").child(postId);
-            postRef.child("pshare").runTransaction(new Transaction.Handler() {
-                @NonNull
-                @Override
-                public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-                    Long currentShareCount = mutableData.getValue(Long.class);
-                    if (currentShareCount == null) {
-                        mutableData.setValue(1L);
-                    } else {
-                        mutableData.setValue(currentShareCount + 1);
-                    }
-                    return Transaction.success(mutableData);
-                }
-
-                @Override
-                public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
-                    if (databaseError != null) {
-                        Log.e("Firebase", "Failed to increment share count", databaseError.toException());
-                    }
-                }
-            });
-        });
-
-        holder.more.setOnClickListener(v -> showMoreOptions(holder.more, myuid, ptime));
-
+       // holder.likebtn.setOnClickListener(v -> likepost(pid, plike));
         //comment button
-        holder.comment.setOnClickListener(v -> {
-            Intent intent = new Intent(context, PostDetailsActivity.class);
-            intent.putExtra("pid", ptime);
-            context.startActivity(intent);
-        });
+//        holder.comment.setOnClickListener(v -> {
+//            Intent intent = new Intent(context, PostDetailsActivity.class);
+//            intent.putExtra("pid", ptime);
+//            context.startActivity(intent);
+//        });
+//        //share button
+//        holder.share_btn.setOnClickListener(v -> {
+//            // Create the Intent
+//            Intent intent = new Intent(Intent.ACTION_SEND);
+//            intent.setType("text/plain");
+//            // Add the post data to the Intent
+//            String shareBody = "Check this out : " + descri + "\n";
+//            intent.putExtra(Intent.EXTRA_TEXT, shareBody);
+//            // Start the activity
+//            context.startActivity(intent.createChooser(intent, "Share using ... "));
+//
+//            // Add the share to the Shares node
+//            String postId = post.getPid();
+//            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//            DatabaseReference sharesRef = FirebaseDatabase.getInstance().getReference().child("Shares");
+//            Shares shares = new Shares(postId, userId);
+//            sharesRef.push().setValue(shares);
+//
+//            // Increment the share count of the post
+//            updateShareCount(postId);
+//        });
     }
 
-    private void likepost(String postId, String plike) {
+    //for incrementing share count
+    private void updateShareCount(String postId) {
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts").child(postId);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Get the current share count as a string
+                String currentShareCountString = dataSnapshot.child("pshare").getValue(String.class);
+
+                if (currentShareCountString != null) {
+                    // Convert the String to long
+                    long currentShareCount = Long.parseLong(currentShareCountString);
+
+                    // Increment the share count
+                    long newShareCount = currentShareCount + 1;
+
+                    // Update the new share count to the database as a string
+                    reference.child("pshare").setValue(String.valueOf(newShareCount));
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Firebase", "Failed to increment share count", databaseError.toException());
+            }
+        });
+    }
+    private void likepost(String postId, Long plike) {
 
         mlike = true;
         final DatabaseReference liekeref = FirebaseDatabase.getInstance().getReference().child("Likes");
@@ -259,14 +231,15 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
 
                 if (mlike) {
                     if (dataSnapshot.child(postId).hasChild(myuid)) {
-                        postref.child(postId).child("plike").setValue(plike.toString());
-                        postref.child(postId).child("plike").setValue("" + (Integer.parseInt(plike) - 1));
+                        // User has already liked the post
+                        postref.child(postId).child("plike").setValue(plike - 1L);
                         liekeref.child(postId).child(myuid).removeValue();
                         mlike = false;
 
                     } else {
-                        postref.child(postId).child("plike").setValue("" + (Integer.parseInt(plike) + 1));
-                        liekeref.child(postId).child(myuid).setValue("Liked");
+                        // User hasn't liked the post yet
+                        postref.child(postId).child("plike").setValue(plike + 1L);
+                        liekeref.child(postId).child(myuid).setValue(true);
                         mlike = false;
                     }
                 }
@@ -278,8 +251,6 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
             }
         });
     }
-
-
 
     private void showMoreOptions(ImageButton more, String uid, final String pid) {
         PopupMenu popupMenu = new PopupMenu(context, more, Gravity.END);
@@ -322,56 +293,6 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
         dialog.show();
     }
 
-
-
-    private void setLikes(final int position, final String postid, final TextView like, final ImageView likebtn) {
-        liekeref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(postid).hasChild(myuid)) {
-                    likebtn.setImageResource(R.drawable.ic_like);
-                } else {
-                    likebtn.setImageResource(R.drawable.ic_like2);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        postref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String plike1 = dataSnapshot.child(postid).child("plike").getValue(String.class);
-                like.setText(plike1);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void updateLikeToLong(final String postid) {
-        DatabaseReference postRef = FirebaseDatabase.getInstance().getReference().child("Posts").child(postid);
-        postRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String plikeStr = dataSnapshot.child("plike").getValue(String.class);
-                Long plikeLong = Long.parseLong(plikeStr);
-                postRef.child("plike").setValue(plikeLong);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
     @Override
     public int getItemCount() {
         return modelPosts.size();
@@ -404,36 +325,38 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
             share_btn = itemView.findViewById(R.id.share);
         }
 
-        private void setLikes(final int position, final String postid, final TextView like, final ImageView likebtn) {
-            liekeref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.child(postid).hasChild(myuid)) {
-                        likebtn.setImageResource(R.drawable.ic_like);
-                    } else {
-                        likebtn.setImageResource(R.drawable.ic_like2);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-            postref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String plike1 = dataSnapshot.child(postid).child("plike").getValue(String.class);
-                    like.setText(String.valueOf(plike1));
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
+//        private void setLikes(final int position, final String postid, final TextView like, final ImageView likebtn) {
+//            liekeref.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    if (dataSnapshot.child(postid).hasChild(myuid)) {
+//                        likebtn.setImageResource(R.drawable.ic_like);
+//                    } else {
+//                        likebtn.setImageResource(R.drawable.ic_like2);
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                }
+//            });
+//
+//            postref.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    String plike1 = dataSnapshot.child(postid).child("plike").getValue(String.class);
+//                    Long plikeLong = Long.parseLong(plike1);
+//                    modelPosts.get(position).setPlike(plikeLong);
+//                    like.setText(plike1.toString());
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                }
+//            });
+//        }
 
 
     }

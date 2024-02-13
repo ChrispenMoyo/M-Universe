@@ -320,7 +320,7 @@ public class PostDetailsActivity extends AppCompatActivity {
                     description.setText((descriptions != null) ? descriptions : "");
                     like.setText(((plike != null) ? plike : "") + " Likes");
                     time.setText((timedate != null) ? timedate : "");
-                    tcomment.setText(((commentcount != null) ? commentcount : "") + " Comments");
+                    tcomment.setText(((commentcount != null) ? commentcount : ""));
 
 
                     if (uimage.equals("noImage")) {

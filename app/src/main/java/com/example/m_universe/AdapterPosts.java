@@ -20,7 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.app.AlertDialog.Builder;
+import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -105,12 +106,13 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
             holder.description.setText(descri);
             holder.time.setText(timedate);
             holder.like.setText(String.valueOf(plike));
+            //comments count
             holder.comments.setText(comm);
             String postid = liekeref.getRef().getKey();
             DatabaseReference postref = FirebaseDatabase.getInstance().getReference().child("Posts").child(postid);
             //holder.setLikes(0, postid, holder.like, holder.likebtn);
 
-            //Textview to show shares count
+            //shares count
             holder.shares.setText(String.valueOf(modelPosts.get(position).getPshare()));
             //more button
             holder.more.setOnClickListener(v -> showMoreOptions(holder.more, myuid, ptime));
@@ -119,7 +121,40 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
                 Intent intent = new Intent(context, PostDetailsActivity.class);
                 intent.putExtra("pid", ptime);
                 context.startActivity(intent);
+                // Assuming you have the post author's ID available in your modelPosts list
+                String postAuthorId = modelPosts.get(position).getUid();
+
+                // Add this line to send a notification when a like is performed
+                sendNotification(myuid, "comment", pid, postAuthorId);
             });
+            //repost button
+            // Set the repost button click listener
+            holder.repost_btn.setOnClickListener(v -> {
+                // Check if the user has already reposted the post
+                repostref.child(pid).child(myuid).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            // User has already reposted the post
+                            holder.repost_btn.setImageResource(R.drawable.ic_repost);
+                            holder.repostedBy.setText("Reposted by " + nameh);
+                            holder.repostedBy.setVisibility(View.VISIBLE);
+                        } else {
+                            // User hasn't reposted the post yet
+                            MyHolder myHolder = holder;
+                            myHolder.showRepostDialog(pid, nameh);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("Firebase", "Failed to check if user has reposted the post", databaseError.toException());
+                    }
+                });
+            });
+
+            // Hide the "repostedBy" TextView initially
+            holder.repostedBy.setVisibility(View.GONE);
             //share button
             holder.share_btn.setOnClickListener(v -> {
                 // Create the Intent
@@ -140,7 +175,14 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
 
                 // Increment the share count of the post
                 updateShareCount(postId);
+                // Assuming you have the post author's ID available in your modelPosts list
+                String postAuthorId = modelPosts.get(position).getUid();
+
+                // Add this line to send a notification when a like is performed
+                sendNotification(myuid, "share", pid, postAuthorId);
             });
+
+
         }
 
         try {
@@ -159,39 +201,14 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
             Intent intent = new Intent(holder.itemView.getContext(),  PostLikedByActivity.class);
             intent.putExtra("pid", pid);
             holder.itemView.getContext().startActivity(intent);
+
         });
 
         //more button
         //holder.more.setOnClickListener(v -> showMoreOptions(holder.more, myuid, ptime));
         //like button
        // holder.likebtn.setOnClickListener(v -> likepost(pid, plike));
-        //comment button
-//        holder.comment.setOnClickListener(v -> {
-//            Intent intent = new Intent(context, PostDetailsActivity.class);
-//            intent.putExtra("pid", ptime);
-//            context.startActivity(intent);
-//        });
-//        //share button
-//        holder.share_btn.setOnClickListener(v -> {
-//            // Create the Intent
-//            Intent intent = new Intent(Intent.ACTION_SEND);
-//            intent.setType("text/plain");
-//            // Add the post data to the Intent
-//            String shareBody = "Check this out : " + descri + "\n";
-//            intent.putExtra(Intent.EXTRA_TEXT, shareBody);
-//            // Start the activity
-//            context.startActivity(intent.createChooser(intent, "Share using ... "));
-//
-//            // Add the share to the Shares node
-//            String postId = post.getPid();
-//            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//            DatabaseReference sharesRef = FirebaseDatabase.getInstance().getReference().child("Shares");
-//            Shares shares = new Shares(postId, userId);
-//            sharesRef.push().setValue(shares);
-//
-//            // Increment the share count of the post
-//            updateShareCount(postId);
-//        });
+
     }
 
     //for incrementing share count
@@ -252,6 +269,45 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
         });
     }
 
+
+    //for repost
+    private static void repostPost(String postId, String reposterName) {
+        // Add the repost to the Reposts node
+        DatabaseReference repostsRef = FirebaseDatabase.getInstance().getReference().child("Reposts");
+        Repost repost = new Repost(postId, FirebaseAuth.getInstance().getCurrentUser().getUid(), reposterName);
+        repostsRef.push().setValue(repost);
+
+        // Increment the repost count of the post
+        updateRepostCount(postId);
+    }
+
+    private static void updateRepostCount(String postId) {
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts").child(postId);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Get the current repost count as a string
+                String currentRepostCountString = dataSnapshot.child("p_repost").getValue(String.class);
+
+                if (currentRepostCountString != null) {
+                    // Convert the String to long
+                    long currentRepostCount = Long.parseLong(currentRepostCountString);
+
+                    // Increment the repost count
+                    long newRepostCount = currentRepostCount + 1;
+
+                    // Update the new repost count to the database as a string
+                    reference.child("p_repost").setValue(String.valueOf(newRepostCount));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Firebase", "Failed to increment repost count", databaseError.toException());
+            }
+        });
+    }
+    //for the options of Show More button
     private void showMoreOptions(ImageButton more, String uid, final String pid) {
         PopupMenu popupMenu = new PopupMenu(context, more, Gravity.END);
         popupMenu.getMenu().add(Menu.NONE, 0, 0, "Translate");
@@ -276,6 +332,7 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
         popupMenu.show();
     }
 
+    //choose the language to translate to
     private void createLanguageDialog(String pid) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Choose Translation Language");
@@ -293,6 +350,27 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
         dialog.show();
     }
 
+    //sending notifications
+    private void sendNotification(String receiverId, String actionType, String postId, String message) {
+        DatabaseReference notificationsRef = FirebaseDatabase.getInstance().getReference("Notifications");
+
+        String notificationId = notificationsRef.push().getKey();
+        long timestamp = System.currentTimeMillis();
+
+        Notification notification = new Notification(receiverId, actionType, postId, timestamp, message);
+
+        if (notificationId != null) {
+            notificationsRef.child(receiverId).child(notificationId).setValue(notification)
+                    .addOnSuccessListener(aVoid -> Log.d("Notification", "Notification sent successfully"))
+                    .addOnFailureListener(e -> Log.e("Notification", "Error sending notification", e));
+        }
+    }
+
+
+
+
+
+
     @Override
     public int getItemCount() {
         return modelPosts.size();
@@ -300,10 +378,12 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
 
     static class MyHolder extends RecyclerView.ViewHolder {
         ImageView picture, image;
-        TextView uname, time, title, description, like, comments, shares, reposts;
+        TextView uname, time, title, description, like, comments, shares,repostedBy, reposts;
         ImageButton more;
         ImageView likebtn, comment, repost_btn, share_btn;
         LinearLayout profile;
+        private AlertDialog repostDialog;
+
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
@@ -323,6 +403,25 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
             profile = itemView.findViewById(R.id.profilelayout);
             repost_btn = itemView.findViewById(R.id.repost);
             share_btn = itemView.findViewById(R.id.share);
+            repostedBy = itemView.findViewById(R.id.repostedBy);
+
+            // Initialize the repost dialog
+            AlertDialog.Builder builder = new Builder(itemView.getContext());
+            builder.setMessage("Do you want to REPOST?");
+            builder.setPositiveButton("Repost", (dialog, which) -> {
+                // If the user selects "Repost", perform the repost action
+                //repostPost(pid, nameh);
+//                repostedBy.setText("Reposted by ");
+//                repostedBy.setVisibility(View.VISIBLE);
+            });
+            builder.setNegativeButton("Cancel", null);
+            repostDialog = builder.create();
+
+        }
+
+
+        public void showRepostDialog(String pid, String nameh) {
+            repostDialog.show();
         }
 
 //        private void setLikes(final int position, final String postid, final TextView like, final ImageView likebtn) {

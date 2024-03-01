@@ -87,91 +87,42 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(new Intent(LoginActivity.this, RegistrationActivity.class));
     }
 
-    private void loginUser(String emaill, String pass) {
+    private void loginUser(String email, String password) {
         progressDialog.setMessage("Please Wait while Login...");
-            progressDialog.setTitle("Login");
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
+        progressDialog.setTitle("Login");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
 
-        // sign in with email and password after authenticating
-        mAuth.signInWithEmailAndPassword(emaill, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+        // Sign in with email and password after authenticating
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        progressDialog.dismiss();
+                        FirebaseUser user = mAuth.getCurrentUser();
 
-                if (task.isSuccessful()) {
+                        if (user != null) {
+                            String uid = user.getUid();
+                            // Now 'uid' contains the UID of the logged-in user
+                            // You can use this 'uid' to query specific user data or perform other actions
+                            // ...
 
-                    progressDialog.dismiss();
-                    FirebaseUser user = mAuth.getCurrentUser();
-
-                    if (task.getResult().getAdditionalUserInfo().isNewUser()) {
-                        String email = user.getEmail();
-                        String uid = user.getUid();
-                        HashMap<Object, String> hashMap = new HashMap<>();
-                        hashMap.put("email", email);
-                        hashMap.put("uid", uid);
-                        hashMap.put("name", "");
-                        hashMap.put("gr num", "");
-                        hashMap.put("phone", "");
-                        hashMap.put("image", "");
-                        hashMap.put("cover", "");
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-                        // store the value in Database in "Users" Node
-                        DatabaseReference reference = database.getReference("Users");
-
-                        // storing the value in Firebase
-                        reference.child(uid).setValue(hashMap);
+                            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+                            Intent mainIntent = new Intent(LoginActivity.this, DashboardActivity.class);
+                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(mainIntent);
+                            finish();
+                        } else {
+                            progressDialog.dismiss();
+                            Toast.makeText(LoginActivity.this, "User not found", Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        progressDialog.dismiss();
+                        Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_LONG).show();
                     }
-                    Toast.makeText(LoginActivity.this, "Registered User " + user.getEmail(), Toast.LENGTH_LONG).show();
-                    Intent mainIntent = new Intent(LoginActivity.this, DashboardActivity.class);
-                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(mainIntent);
-                    finish();
-                } else {
+                })
+                .addOnFailureListener(e -> {
                     progressDialog.dismiss();
-                    Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_LONG).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressDialog.dismiss();
-                Toast.makeText(LoginActivity.this, "Error Occurred", Toast.LENGTH_LONG).show();
-            }
-        });
+                    Toast.makeText(LoginActivity.this, "Error Occurred: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
     }
 }
-//    private void performLogin()
-//    {
-//        user = et_user.getText().toString();
-//        pass = et_pass.getText().toString();
-//        if (pass.isEmpty() || pass.length() < 6) {
-//            et_pass.setError("Enter min 6 char password");
-//        }
-//        else {
-//            progressDialog.setMessage("Please Wait while Login...");
-//            progressDialog.setTitle("Login");
-//            progressDialog.setCanceledOnTouchOutside(false);
-//            progressDialog.show();
-//            mAuth.signInWithEmailAndPassword(user, pass).addOnCompleteListener(task -> {
-//                if (task.isSuccessful()) {
-//                    progressDialog.dismiss();
-//                    sendUserToNextActivity();
-//                    Toast.makeText(LoginActivity.this,"Welcome " + task.getException(), Toast.LENGTH_LONG).show();
-//                }
-//                else {
-//                    progressDialog.dismiss();
-//                    Toast.makeText(LoginActivity.this, "" + task.getException(), Toast.LENGTH_LONG).show();
-//                }
-//            });
-//        }
-//    }
-
-//    private void sendUserToNextActivity() {
-//        Intent i = new Intent(LoginActivity.this, DashboardActivity.class);
-//        String uname = user.replace("@gmail.com", "");
-//        i.putExtra("user",uname);
-//        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(i);
-//    }
-//}

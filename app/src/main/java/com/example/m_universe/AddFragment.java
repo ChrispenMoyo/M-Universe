@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -70,7 +71,7 @@ public class AddFragment extends Fragment {
     String[] storagePermission = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
     ProgressBar pd;
     ImageView image;
-   // String edititle, editdes, editimage;
+    // String edititle, editdes, editimage;
     private static final int IMAGEPICK_GALLERY_REQUEST = 300;
     private static final int IMAGE_PICKCAMERA_REQUEST = 400;
 
@@ -109,13 +110,13 @@ public class AddFragment extends Fragment {
 
         //Retrieving the user data like name ,email and profile pic using query
 
-       // databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        // databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         Query query = databaseReference.orderByChild("email").equalTo(firebaseUser.getEmail());
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                   String name1 = Objects.requireNonNull(dataSnapshot1.child("uname").getValue()).toString();
+                    String name1 = Objects.requireNonNull(dataSnapshot1.child("uname").getValue()).toString();
                     email = "" + dataSnapshot1.child("email").getValue();
                     dp = "" + Objects.requireNonNull(dataSnapshot1.child("image").getValue());
                     // setting data to our text view
@@ -193,6 +194,7 @@ public class AddFragment extends Fragment {
 
         return view;
     }
+
     private UserDataCallback callback;
 
     // ... other code ...
@@ -331,8 +333,10 @@ public class AddFragment extends Fragment {
 
     // request for permission to click photo using camera in app
     private void requestCameraPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.CAMERA)) {
+            Toast.makeText(requireContext(), "Camera permission is required for image capture.", Toast.LENGTH_SHORT).show();
+        }
         requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
-
     }
 
     // if access is given then pick image from camera and then put
@@ -362,142 +366,75 @@ public class AddFragment extends Fragment {
         // Generate a new post key
         final String timestamp = String.valueOf(System.currentTimeMillis());
 
-        
 
         String filepathname = "Posts/" + "post" + timestamp;
-        Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] data = byteArrayOutputStream.toByteArray();
 
-        // Initialize the storage reference for uploading the data
+// Initialize the storage reference for uploading the data
         StorageReference storageReference1 = FirebaseStorage.getInstance().getReference().child(filepathname);
-        UploadTask uploadTask = storageReference1.putBytes(data);
 
-        uploadTask.addOnSuccessListener(taskSnapshot -> {
-            // Get the download URL after the upload is complete
-            storageReference1.getDownloadUrl().addOnSuccessListener(uri -> {
-                String downloadUri = uri.toString();
+// Check if the imageuri is not null
+        if (imageuri != null) {
+            // Upload the image directly from the Uri
+            storageReference1.putFile(imageuri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        // Get the download URL after the upload is complete
+                        storageReference1.getDownloadUrl().addOnSuccessListener(uri -> {
+                            String downloadUri = uri.toString();
 
-                // If the upload is successful, update the data into Firebase
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("uid", uid);
-                hashMap.put("uname", name);
-                hashMap.put("uemail", email);
-                hashMap.put("udp", dp);
-                hashMap.put("description", description);
-                hashMap.put("uimage", downloadUri);
-                hashMap.put("ptime", timestamp);
-                hashMap.put("pid", timestamp);
-                hashMap.put("plike", "0");
-                hashMap.put("pcomments", "0");
-                hashMap.put("p_reposts", "0");
-                hashMap.put("pshare", "0");
+                            // If the upload is successful, update the data into Firebase
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("uid", uid);
+                            hashMap.put("uname", name);
+                            hashMap.put("uemail", email);
+                            hashMap.put("udp", dp);
+                            hashMap.put("description", description);
+                            hashMap.put("uimage", downloadUri);
+                            hashMap.put("ptime", timestamp);
+                            hashMap.put("pid", timestamp);
+                            hashMap.put("plike", "0");
+                            hashMap.put("pcomments", "0");
+                            hashMap.put("p_reposts", "0");
+                            hashMap.put("pshare", "0");
 
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
+                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
 
-                // Save the post data to the database
-                databaseReference.child(timestamp).setValue(hashMap)
-                        .addOnSuccessListener(aVoid -> {
-                            pd.setVisibility(View.GONE);
-                            Toast.makeText(requireContext(), "Published", Toast.LENGTH_LONG).show();
-                            des.setText("");
-                            image.setImageURI(null);
-                            imageuri = null;
-                            startActivity(new Intent(getContext(), DashboardActivity.class));
-                            getActivity().finish();
-                        })
-                        .addOnFailureListener(e -> {
-                            pd.setVisibility(View.GONE);
-                            Toast.makeText(requireContext(), "Failed to upload post", Toast.LENGTH_LONG).show();
+                            // Save the post data to the database
+                            databaseReference.child(timestamp).setValue(hashMap)
+                                    .addOnSuccessListener(aVoid -> {
+                                        pd.setVisibility(View.GONE);
+                                        Toast.makeText(requireContext(), "Published", Toast.LENGTH_LONG).show();
+                                        des.setText("");
+                                        image.setImageURI(null);
+                                        imageuri = null;
+                                        startActivity(new Intent(getContext(), DashboardActivity.class));
+                                        getActivity().finish();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        pd.setVisibility(View.GONE);
+                                        Toast.makeText(requireContext(), "Failed to upload post", Toast.LENGTH_LONG).show();
+                                    });
+
                         });
-            });
-        }).addOnFailureListener(e -> {
-            pd.setVisibility(View.GONE);
-            Log.e("FirebaseError", "Failed to upload image: " + e.getMessage());
-            Toast.makeText(requireContext(), "Failed to upload image", Toast.LENGTH_LONG).show();
-        });
-    }
-
-    // Here we are getting data from image
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode == getActivity().RESULT_OK) {
-            if (requestCode == IMAGEPICK_GALLERY_REQUEST) {
-                imageuri = data.getData();
-                image.setImageURI(imageuri);
-            }
-            if (requestCode == IMAGE_PICKCAMERA_REQUEST) {
-                image.setImageURI(imageuri);
-            }
+                    }).addOnFailureListener(e -> {
+                        pd.setVisibility(View.GONE);
+                        Log.e("FirebaseError", "Failed to upload image: " + e.getMessage());
+                        Toast.makeText(requireContext(), "Failed to upload image", Toast.LENGTH_LONG).show();
+                    });
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 }
-// Upload the value of blog data into firebase
-//private void uploadData(String name, String email, String dp, final String description) {
-//    pd.setVisibility(View.VISIBLE);
-//    final String timestamp = String.valueOf(System.currentTimeMillis());
-//    String filepathname = "Posts/" + "post" + timestamp;
-//    Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
-//    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//    bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-//    byte[] data = byteArrayOutputStream.toByteArray();
-//
-//   // String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-// //   DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
-//
-//    // Get the username from shared preferences
-//    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserData", Context.MODE_PRIVATE);
-//    String username = sharedPreferences.getString("uname", "");
-//
-//
-//    // Initialize the storage reference for uploading the data
-//    StorageReference storageReference1 = FirebaseStorage.getInstance().getReference().child(filepathname);
-//    UploadTask uploadTask = storageReference1.putBytes(data);
-//
-//    uploadTask.addOnSuccessListener(taskSnapshot -> {
-//        storageReference1.getDownloadUrl().addOnSuccessListener(uri -> {
-//            String downloadUri = uri.toString();
-//
-//            // If the upload is successful, update the data into Firebase
-//            HashMap<String, Object> hashMap = new HashMap<>();
-//            hashMap.put("uid", uid);
-//            hashMap.put("uname", username);
-//            hashMap.put("uemail", email);
-//            hashMap.put("udp", dp);
-//            hashMap.put("description", description);
-//            hashMap.put("uimage", downloadUri);
-//            hashMap.put("ptime", timestamp);
-//            hashMap.put("plike", "0");
-//            hashMap.put("pcomments", "0");
-//            hashMap.put("p_reposts", "0");
-//            hashMap.put("pshare", "0");
-//
-//            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
-//            //String postId = databaseReference.push().getKey();
-//
-//            // Save the post data to the database
-//            databaseReference.child(timestamp).setValue(hashMap)
-//                    .addOnSuccessListener(aVoid -> {
-//                        pd.setVisibility(View.GONE);
-//                        Toast.makeText(requireContext(), "Published", Toast.LENGTH_LONG).show();
-//                        des.setText("");
-//                        image.setImageURI(null);
-//                        imageuri = null;
-//                        startActivity(new Intent(getContext(), DashboardActivity.class));
-//                        getActivity().finish();
-//                    })
-//                    .addOnFailureListener(e -> {
-//                        pd.setVisibility(View.GONE);
-//                        Toast.makeText(requireContext(), "Failed to upload post", Toast.LENGTH_LONG).show();
-//                    });
-//        });
-//    }).addOnFailureListener(e -> {
-//        pd.setVisibility(View.GONE);
-//        Log.e("FirebaseError", "Failed to upload image: " + e.getMessage());
-//        Toast.makeText(requireContext(), "Failed to upload image", Toast.LENGTH_LONG).show();
-//    });
+// Here we are getting data from image
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        if (resultCode == getActivity().RESULT_OK) {
+//            if (requestCode == IMAGEPICK_GALLERY_REQUEST) {
+//                imageuri = data.getData();
+//                image.setImageURI(imageuri);
+//            }
+//            if (requestCode == IMAGE_PICKCAMERA_REQUEST) {
+//                image.setImageURI(imageuri);
+//            }
+//        }
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
 //}
-
-

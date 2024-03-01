@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- notification_item.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -31,7 +33,6 @@
             android:id="@+id/messageTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="John Doe liked your post."
             android:fontFamily="@font/convergences"
             android:textAppearance="?attr/textAppearanceBody1"
             android:textColor="?attr/colorOnSurface" />
@@ -43,9 +44,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="1 hour ago"
         android:fontFamily="@font/convergences"
         android:textAppearance="?attr/textAppearanceCaption"
         android:textColor="?attr/colorOnSurface" />
+
 
 </LinearLayout>

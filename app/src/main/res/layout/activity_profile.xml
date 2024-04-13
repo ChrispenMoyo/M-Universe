@@ -32,16 +32,15 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="0dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="50dp"
         android:background="#77000000"
         android:orientation="vertical"
         app:layout_constraintStart_toEndOf="@+id/avatartv"
         app:layout_constraintTop_toTopOf="@+id/cavertv"
-        app:layout_constraintBottom_toBottomOf="@+id/cavertv"
-        app:layout_constraintEnd_toEndOf="@+id/cavertv">
+        app:layout_constraintBottom_toBottomOf="@+id/cavertv">
 
         <TextView
             android:id="@+id/nametv"
@@ -55,7 +54,7 @@
             android:textSize="25sp" />
 
         <TextView
-            android:id="@+id/emailtv"
+            android:id="@+id/gr_numtv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -65,22 +64,14 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/followers_count_tv"
-            android:layout_width="match_parent"
+            android:id="@+id/emailtv"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            android:fontFamily="@font/convergences"
+            android:text="Email"
             android:textColor="@color/white"
-            android:text="2 Followers"
-            android:fontFamily="@font/convergences"/>
-
-        <TextView
-            android:id="@+id/following_count_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:textColor="@color/white"
-            android:text="2 Following "
-            android:fontFamily="@font/convergences"/>
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -94,16 +85,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
-        android:src="@drawable/ic_edit"
-        android:contentDescription="Edit profile"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

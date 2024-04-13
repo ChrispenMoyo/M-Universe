@@ -1,17 +1,511 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ChatFragment">
+    android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chatlistrecycle"
+<LinearLayout
+    android:id="@+id/top"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CHATS"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/convergences"
+            android:textColor="@color/black"
+            android:padding="16dp" />
+
+</LinearLayout>
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/row_chatlist" />
+        android:layout_below="@id/top">
 
-</FrameLayout>
+        <LinearLayout
+            android:id="@+id/chatList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Chat item 1 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/profileImageView"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/pp3"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/nameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView"
+                    android:layout_marginStart="16dp"
+                    android:text="Elisha Chingore"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:layout_alignTop="@id/profileImageView" />
+
+                <TextView
+                    android:id="@+id/lastMessageTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView"
+                    android:layout_below="@id/nameTextView"
+                    android:layout_marginStart="16dp"
+                    android:text="Its IPDC."
+                    android:fontFamily="@font/convergences"
+                    android:textSize="16sp"
+                    android:textColor="@color/greay" />
+
+
+            </RelativeLayout>
+
+            <!-- Chat item 2 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/profileImageView1"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/pp1"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/nameTextView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView1"
+                    android:layout_marginStart="16dp"
+                    android:text="Meet Bhuva"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:layout_alignTop="@id/profileImageView1" />
+
+                <TextView
+                    android:id="@+id/lastMessageTextView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView1"
+                    android:layout_below="@id/nameTextView1"
+                    android:layout_marginStart="16dp"
+                    android:text="Yoh , where are you?"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="16sp"
+                    android:textColor="@color/main_blue" />
+
+
+            </RelativeLayout>
+
+            <!-- Chat item 3 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/profileImageView2"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_profile2"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/nameTextView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView2"
+                    android:layout_marginStart="16dp"
+                    android:text="Karan Suva"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:layout_alignTop="@id/profileImageView2" />
+
+                <TextView
+                    android:id="@+id/lastMessageTextView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView2"
+                    android:layout_below="@id/nameTextView2"
+                    android:layout_marginStart="16dp"
+                    android:text="The classes have just started."
+                    android:fontFamily="@font/convergences"
+                    android:textSize="16sp"
+                    android:textColor="@color/greay" />
+
+                <TextView
+                    android:id="@+id/unreadCountTextView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:text="40"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:background="@color/colorAccent"
+                    android:padding="4dp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <!-- Chat item 4 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/profileImageView3"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/pp1"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/nameTextView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView3"
+                    android:layout_marginStart="16dp"
+                    android:text="Zane Kilonzo"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:layout_alignTop="@id/profileImageView3" />
+
+                <TextView
+                    android:id="@+id/lastMessageTextView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView3"
+                    android:layout_below="@id/nameTextView3"
+                    android:layout_marginStart="16dp"
+                    android:text="We will go tomorrow"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="16sp"
+                    android:textColor="@color/greay" />
+
+
+            </RelativeLayout>
+
+            <!-- Chat item 5 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/profileImageView4"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_profile2"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/nameTextView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView4"
+                    android:layout_marginStart="16dp"
+                    android:text="Heer Raval"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:layout_alignTop="@id/profileImageView4" />
+
+                <TextView
+                    android:id="@+id/lastMessageTextView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView4"
+                    android:layout_below="@id/nameTextView4"
+                    android:layout_marginStart="16dp"
+                    android:text="Just the send the money bro"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="16sp"
+                    android:textColor="@color/main_blue" />
+
+                <TextView
+                    android:id="@+id/unreadCountTextView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:text="40"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:background="@color/colorAccent"
+                    android:padding="4dp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <!-- Chat item 6 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/profileImageView5"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/pp3"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/nameTextView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView5"
+                    android:layout_marginStart="16dp"
+                    android:text="Takudzwa Sibanda"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:layout_alignTop="@id/profileImageView5" />
+
+                <TextView
+                    android:id="@+id/lastMessageTextView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView5"
+                    android:layout_below="@id/nameTextView5"
+                    android:layout_marginStart="16dp"
+                    android:text="Did you check the Sports Community?"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="16sp"
+                    android:textColor="@color/greay" />
+
+                <TextView
+                    android:id="@+id/unreadCountTextView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:text="40"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:background="@color/colorAccent"
+                    android:padding="4dp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <!-- Chat item 7 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/profileImageView6"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_profile2"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/nameTextView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView6"
+                    android:layout_marginStart="16dp"
+                    android:text="Daman Pratik"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:layout_alignTop="@id/profileImageView6" />
+
+                <TextView
+                    android:id="@+id/lastMessageTextView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView6"
+                    android:layout_below="@id/nameTextView6"
+                    android:layout_marginStart="16dp"
+                    android:text="Ok, Done now"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="16sp"
+                    android:textColor="@color/main_blue" />
+
+                <TextView
+                    android:id="@+id/unreadCountTextView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:text="40"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:background="@color/colorAccent"
+                    android:padding="4dp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <!-- Chat item 8 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/profileImageView7"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/pp3"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/nameTextView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView7"
+                    android:layout_marginStart="16dp"
+                    android:text="Meet Bhai"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:layout_alignTop="@id/profileImageView7" />
+
+                <TextView
+                    android:id="@+id/lastMessageTextView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView7"
+                    android:layout_below="@id/nameTextView7"
+                    android:layout_marginStart="16dp"
+                    android:text="Lets go to the canteen"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="16sp"
+                    android:textColor="@color/main_blue" />
+
+                <TextView
+                    android:id="@+id/unreadCountTextView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:text="40"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:background="@color/colorAccent"
+                    android:padding="4dp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <!-- Chat item 9 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/profileImageView8"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_profile2"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/nameTextView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView8"
+                    android:layout_marginStart="16dp"
+                    android:text="Brandon Tsanoz"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:layout_alignTop="@id/profileImageView8" />
+
+                <TextView
+                    android:id="@+id/lastMessageTextView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView8"
+                    android:layout_below="@id/nameTextView8"
+                    android:layout_marginStart="16dp"
+                    android:text="I have passed bro"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="16sp"
+                    android:textColor="@color/greay" />
+
+                <TextView
+                    android:id="@+id/unreadCountTextView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:text="40"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:background="@color/colorAccent"
+                    android:padding="4dp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <!-- Chat item 10 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/profileImageView9"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/pp1"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/nameTextView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView9"
+                    android:layout_marginStart="16dp"
+                    android:text="Kyeyune Swabur"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:layout_alignTop="@id/profileImageView9" />
+
+                <TextView
+                    android:id="@+id/lastMessageTextView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileImageView9"
+                    android:layout_below="@id/nameTextView9"
+                    android:layout_marginStart="16dp"
+                    android:text="Where are you now?"
+                    android:fontFamily="@font/convergences"
+                    android:textSize="16sp"
+                    android:textColor="@color/greay" />
+
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

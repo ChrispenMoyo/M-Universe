@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,37 +44,71 @@ public class NotificationsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    private void setupRecyclerView() {
-        RecyclerView recyclerView = getView().findViewById(R.id.notificationsRecyclerView); // Replace with your RecyclerView ID
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
+//    private void setupRecyclerView(RecyclerView recyclerView) {
+//
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+//        recyclerView.setLayoutManager(layoutManager);
+//
+//        AdapterNotifications adapter = new AdapterNotifications(new ArrayList<>(), new AdapterNotifications.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(Notification notification) {
+//                // Handle click event here
+//            }
+//        });
+//
+//        // Add a ValueEventListener to fetch notifications only for the current user from the database
+//        DatabaseReference notificationsRef = FirebaseDatabase.getInstance().getReference().child("Notifications");
+//
+//        // Get the UID of the current user
+//        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//
+//        // Query notifications only for the current user
+//        notificationsRef.orderByChild("userId").equalTo(currentUserId).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                List<Notification> notifications = new ArrayList<>();
+//
+//                // Iterate through all child nodes (notifications) and add them to the list
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    Notification notification = snapshot.getValue(Notification.class);
+//                    notifications.add(notification);
+//                }
+//
+//                // Check if there are any notifications
+//                if (notifications.isEmpty()) {
+//                    // Display "No Notifications" message
+//                    showNoNotificationsMessage();
+//                } else {
+//                    // Update the adapter with the new list of notifications
+//                    adapter.setNotifications(notifications);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                // Handle errors if needed
+//            }
+//        });
+//
+//        recyclerView.setAdapter(adapter);
+//    }
+//
+//    private void showNoNotificationsMessage() {
+//        // Inflate a layout containing the "No Notifications" message
+//        LayoutInflater inflater = LayoutInflater.from(getContext());
+//        View noNotificationsView = inflater.inflate(R.layout.notification_no_notifications, null);
+//
+//        // Get the RecyclerView container
+//        RecyclerView recyclerView = getView().findViewById(R.id.notificationsRecyclerView);
+//
+//        // Get the parent layout of the RecyclerView
+//        RelativeLayout parentLayout = (RelativeLayout) recyclerView.getParent();
+//
+//        // Remove the RecyclerView and add the "No Notifications" message
+//        parentLayout.removeView(recyclerView);
+//        parentLayout.addView(noNotificationsView);
+//    }
 
-        AdapterNotifications adapter = new AdapterNotifications();
-        recyclerView.setAdapter(adapter);
-
-        // Add a ValueEventListener to fetch notifications from the database
-        DatabaseReference notificationsRef = FirebaseDatabase.getInstance().getReference().child("Notifications");
-        notificationsRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Notification> notifications = new ArrayList<>();
-
-                // Iterate through all child nodes (notifications) and add them to the list
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Notification notification = snapshot.getValue(Notification.class);
-                    notifications.add(notification);
-                }
-
-                // Update the adapter with the new list of notifications
-                adapter.setNotifications(notifications);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle errors if needed
-            }
-        });
-    }
 
 
     /**
@@ -107,40 +144,44 @@ public class NotificationsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_notifications, container, false);
 
         // Set up RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.notificationsRecyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        AdapterNotifications adapter = new AdapterNotifications();
-        recyclerView.setAdapter(adapter);
-
-        // Add a ValueEventListener to fetch notifications only for the current user from the database
-        DatabaseReference notificationsRef = FirebaseDatabase.getInstance().getReference().child("Notifications");
-
-        // Get the UID of the current user
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        // Query notifications only for the current user
-        notificationsRef.orderByChild("userId").equalTo(currentUserId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Notification> notifications = new ArrayList<>();
-
-                // Iterate through all child nodes (notifications) and add them to the list
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Notification notification = snapshot.getValue(Notification.class);
-                    notifications.add(notification);
-                }
-
-                // Update the adapter with the new list of notifications
-                adapter.setNotifications(notifications);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle errors if needed
-            }
-        });
+//        RecyclerView recyclerView = view.findViewById(R.id.notificationsRecyclerView);
+//        setupRecyclerView(recyclerView);
+//
+//        // Set up RecyclerView
+//
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+//        recyclerView.setLayoutManager(layoutManager);
+//
+////        AdapterNotifications adapter = new AdapterNotifications(new ArrayList<>(),  new AdapterNotifications.OnItemClickListener());
+////        recyclerView.setAdapter(adapter);
+//
+//        // Add a ValueEventListener to fetch notifications only for the current user from the database
+//        DatabaseReference notificationsRef = FirebaseDatabase.getInstance().getReference().child("Notifications");
+//
+//        // Get the UID of the current user
+//        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//
+//        // Query notifications only for the current user
+//        notificationsRef.orderByChild("userId").equalTo(currentUserId).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                List<Notification> notifications = new ArrayList<>();
+//
+//                // Iterate through all child nodes (notifications) and add them to the list
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    Notification notification = snapshot.getValue(Notification.class);
+//                    notifications.add(notification);
+//                }
+//
+//                // Update the adapter with the new list of notifications
+//               // adapter.setNotifications(notifications);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                // Handle errors if needed
+//            }
+//        });
 
         return view;
     }

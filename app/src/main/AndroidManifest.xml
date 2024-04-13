@@ -16,12 +16,28 @@
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/logo2"
         android:label="M-Universe"
         android:supportsRtl="true"
         android:theme="@style/Theme.MUniverse"
-        tools:targetApi="31">
+        tools:targetApi="tiramisu">
+        <activity
+            android:name=".music"
+            android:exported="false" />
+        <activity
+            android:name=".programmers"
+            android:exported="false" />
+        <activity
+            android:name=".gamers"
+            android:exported="false" />
+        <activity
+            android:name=".dance"
+            android:exported="false" />
+        <activity
+            android:name=".userProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".chat"
             android:exported="false" />
@@ -66,7 +82,8 @@
             android:exported="false" />
         <activity
             android:name=".SplashScreen"
-            android:exported="false"></activity>
+            android:exported="false" />
+        <activity android:name=".SportsActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

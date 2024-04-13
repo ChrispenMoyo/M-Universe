@@ -13,14 +13,23 @@ public class NotificationViewHolder extends RecyclerView.ViewHolder {
     private TextView messageTextView;
     private TextView timestampTextView;
 
-    public NotificationViewHolder(@NonNull View itemView) {
+    public NotificationViewHolder(@NonNull View itemView, final AdapterNotifications.OnItemClickListener listener, final AdapterNotifications adapterNotifications) {
         super(itemView);
         typeTextView = itemView.findViewById(R.id.typeTextView);
         messageTextView = itemView.findViewById(R.id.messageTextView);
         timestampTextView = itemView.findViewById(R.id.timestampTextView);
+
+        itemView.setOnClickListener(v -> {
+            int position = getAdapterPosition();
+
+            if (listener != null && position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(adapterNotifications.notifications.get(position));
+
+            }
+        });
     }
 
-    public void bind(Notification notification) {
+    public void bind(Notification notification, AdapterNotifications adapterNotifications) {
         // Set the type of notification (like, comment, share, repost) in typeTextView
         typeTextView.setText(notification.getActionType());
 

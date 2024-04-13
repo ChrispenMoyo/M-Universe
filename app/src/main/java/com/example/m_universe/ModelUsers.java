@@ -2,7 +2,9 @@ package com.example.m_universe;
 
 public class ModelUsers {
     private String uid;
-    private String name;
+    private String uname;
+    private String grNum;
+    private String email;
     private String image;
 
     // Default constructor required for Firebase
@@ -10,9 +12,11 @@ public class ModelUsers {
     }
 
     // Constructor with parameters
-    public ModelUsers(String uid, String name, String image) {
+    public ModelUsers(String uid, String uname, String grNum, String email, String image) {
         this.uid = uid;
-        this.name = name;
+        this.uname = uname;
+        this.grNum = grNum;
+        this.email = email;
         this.image = image;
     }
 
@@ -21,8 +25,16 @@ public class ModelUsers {
         return uid;
     }
 
-    public String getName() {
-        return name;
+    public String getUname() {
+        return uname;
+    }
+
+    public String getGrNum() {
+        return grNum;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getImage() {
@@ -34,8 +46,16 @@ public class ModelUsers {
         this.uid = uid;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUname(String uname) {
+        this.uname = uname;
+    }
+
+    public void setGrNum(String grNum) {
+        this.grNum = grNum;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setImage(String image) {

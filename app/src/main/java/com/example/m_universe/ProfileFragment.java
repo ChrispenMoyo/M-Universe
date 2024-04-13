@@ -25,9 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Objects;
-
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -50,60 +47,65 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        // creating a view to inflate the layout
         View view = inflater.inflate(R.layout.activity_profile_fragment, container, false);
-        firebaseAuth = FirebaseAuth.getInstance();
 
-        // getting current user data
+        // Call the method to load user profile
+        loadUserProfile(view);
+
+        return view;
+    }
+
+    private void loadUserProfile(View view) {
+        firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Users");
 
-        // Initialising the text view and imageview
+        // Initializing the text view and image view
         avatartv = view.findViewById(R.id.avatartv);
         nam = view.findViewById(R.id.nametv);
         email = view.findViewById(R.id.emailtv);
         fab = view.findViewById(R.id.fab);
-        pd = view.findViewById(R.id.progressBar); // get a reference to the ProgressBar
+        pd = view.findViewById(R.id.progressBar); // Get a reference to the ProgressBar
 
-        // On click we will open EditProfileActivity
+        // On click, open EditProfileActivity
         fab.setOnClickListener(v -> startActivity(new Intent(getActivity(), EditProfilePage.class)));
 
         // Show the ProgressBar while loading the data
         pd.setVisibility(View.VISIBLE);
-        //pd = new ProgressBar(getActivity());
-       // pd.setCanceledOnTouchOutside(false);
+
+        // Query to retrieve user data
         Query query = databaseReference.orderByChild("email").equalTo(firebaseUser.getEmail());
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    // Retrieving Data from firebase
+                    // Retrieving data from Firebase
                     String name = "" + dataSnapshot1.child("uname").getValue();
                     String emaill = "" + dataSnapshot1.child("email").getValue();
                     String image = "" + dataSnapshot1.child("image").getValue();
-                    // setting data to our text view
+
+                    // Setting data to our text view
                     nam.setText(name);
                     email.setText(emaill);
+
                     try {
                         Glide.with(requireActivity()).load(image).into(avatartv);
                     } catch (Exception e) {
-
+                        // Handle Glide exception
                     }
                 }
+
                 // Hide the ProgressBar when the data has been loaded
                 pd.setVisibility(View.GONE);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                // Handle database error
             }
         });
-
-
-        return view;
     }
 
     @Override

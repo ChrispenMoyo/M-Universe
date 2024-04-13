@@ -59,20 +59,17 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-        btn_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String emaill = et_user.getText().toString().trim();
-                String pass = et_pass.getText().toString().trim();
+        btn_login.setOnClickListener(v -> {
+            String emaill = et_user.getText().toString().trim();
+            String pass = et_pass.getText().toString().trim();
 
-                // if format of email doesn't matches return null
-                if (!Patterns.EMAIL_ADDRESS.matcher(emaill).matches()) {
-                    et_user.setError("Invalid Email");
-                    et_user.setFocusable(true);
+            // if format of email doesn't matches return null
+            if (!Patterns.EMAIL_ADDRESS.matcher(emaill).matches()) {
+                et_user.setError("Invalid Email");
+                et_user.setFocusable(true);
 
-                } else {
-                    loginUser(emaill, pass);
-                }
+            } else {
+                loginUser(emaill, pass);
             }
         });
         //other buttons

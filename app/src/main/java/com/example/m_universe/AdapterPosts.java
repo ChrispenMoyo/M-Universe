@@ -54,6 +54,7 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
     private static DatabaseReference liekeref;
     private static DatabaseReference postref;
     boolean mprocesslike = false;
+    private List<ModelPost> posts;
 
     public AdapterPosts(Context context, List<ModelPost> modelPosts) {
         this.context = context;
@@ -102,7 +103,7 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
             calendar.setTimeInMillis(Long.parseLong(ptime));
             String timedate = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
             holder.uname.setText(nameh);
-//        holder.title.setText(titlee);
+//          holder.title.setText(titlee);
             holder.description.setText(descri);
             holder.time.setText(timedate);
             holder.like.setText(String.valueOf(plike));
@@ -204,8 +205,6 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
 
         });
 
-        //more button
-        //holder.more.setOnClickListener(v -> showMoreOptions(holder.more, myuid, ptime));
         //like button
        // holder.likebtn.setOnClickListener(v -> likepost(pid, plike));
 
@@ -252,6 +251,7 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
                         postref.child(postId).child("plike").setValue(plike - 1L);
                         liekeref.child(postId).child(myuid).removeValue();
                         mlike = false;
+
 
                     } else {
                         // User hasn't liked the post yet
@@ -308,7 +308,7 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
         });
     }
     //for the options of Show More button
-    private void showMoreOptions(ImageButton more, String uid, final String pid) {
+    private void showMoreOptions(ImageButton more, String uname, final String pid) {
         PopupMenu popupMenu = new PopupMenu(context, more, Gravity.END);
         popupMenu.getMenu().add(Menu.NONE, 0, 0, "Translate");
         popupMenu.getMenu().add(Menu.NONE, 1, 1, "About Account");
@@ -320,7 +320,7 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
                 createLanguageDialog(pid);
             } else if (item.getItemId() == 1) {
                 // Handle About Account option
-                Toast.makeText(context, "About Account selected for post: " + pid, Toast.LENGTH_SHORT).show();
+                navigateToUserProfile(uname);
             } else if (item.getItemId() == 2) {
                 // Handle Report option
                 Toast.makeText(context, "Report selected for post: " + pid, Toast.LENGTH_SHORT).show();
@@ -350,6 +350,18 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
         dialog.show();
     }
 
+    //navigate to user's profile
+    private void navigateToUserProfile(String uname) {
+        // Create an Intent to start the Profile activity
+        Intent intent = new Intent(context, userProfileActivity.class);
+        // Pass the UID of the user whose profile you want to display
+        intent.putExtra("uname", uname);
+        // Start the activity
+        context.startActivity(intent);
+    }
+
+
+    //sending notifications
     //sending notifications
     private void sendNotification(String receiverId, String actionType, String postId, String message) {
         DatabaseReference notificationsRef = FirebaseDatabase.getInstance().getReference("Notifications");
@@ -374,6 +386,11 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
     @Override
     public int getItemCount() {
         return modelPosts.size();
+    }
+
+    public void updatePosts(List<ModelPost> posts) {
+        this.posts = posts;
+        notifyDataSetChanged();
     }
 
     static class MyHolder extends RecyclerView.ViewHolder {
@@ -418,7 +435,6 @@ public class AdapterPosts extends RecyclerView.Adapter<com.example.m_universe.Ad
             repostDialog = builder.create();
 
         }
-
 
         public void showRepostDialog(String pid, String nameh) {
             repostDialog.show();

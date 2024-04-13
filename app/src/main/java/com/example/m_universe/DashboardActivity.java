@@ -1,5 +1,8 @@
 package com.example.m_universe;
 
+import static android.app.PendingIntent.getActivity;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -10,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -28,11 +33,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.firebase.database.Query;
-
-
-
-
-
 public class DashboardActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
@@ -43,23 +43,62 @@ public class DashboardActivity extends AppCompatActivity {
    // ActionBar actionBar;
     NavigationBarView navigationView;
     TextView toolbarTitle;
-    ImageView profileIcon,filterIcon,searchIcon;
+    AdapterPosts adapterPosts;
+    private RecyclerView recyclerViewPosts;
+    ImageView profileIcon,filterIcon,searchIcon, app_icon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        // Set the Toolbar as the app bar
-       // setSupportActionBar(findViewById(R.id.toolbar));
+        // App Icon & Toolbar title
+        toolbarTitle = findViewById(R.id.toolbar_title);
+        app_icon = findViewById(R.id.app_icon);
 
-// Customize the Toolbar title
-        // toolbarTitle = findViewById(R.id.toolbar_title);
-        // toolbarTitle.setText("M-Universe"); // Replace with your desired title
+        recyclerViewPosts = findViewById(R.id.recyclerViewPosts);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerViewPosts.setLayoutManager(layoutManager);
+
+        // Handle clicks on the toolbar title
+        toolbarTitle.setOnClickListener(view -> goToHomeFragment());
+
+        // Handle clicks on the app icon
+        app_icon.setOnClickListener(view -> goToHomeFragment());
+
+        // Handle clicks on the search icon
+        searchIcon = findViewById(R.id.search_icon);
+
+        searchIcon.setOnClickListener(view -> {
+            Intent searchIntent = new Intent(DashboardActivity.this, search.class);
+            startActivity(searchIntent);
+        });
+
+        // Handle clicks on the filter icon
+        filterIcon = findViewById(R.id.filter_icon);
+
+        PopupMenu popupMenu2 = new PopupMenu(this, filterIcon); // "this" refers to the context
+        // Inflate the menu resource you created
+        popupMenu2.getMenuInflater().inflate(R.menu.sort_filter, popupMenu2.getMenu());
+
+        // Set a click listener for Sort 1
+        popupMenu2.getMenu().findItem(R.id.sort_1).setOnMenuItemClickListener(item -> {
+            loadPosts(false); // Load recent posts with newest posts at the top
+            return true;
+        });
+
+        // Set a click listener for Sort 2
+        popupMenu2.getMenu().findItem(R.id.sort_2).setOnMenuItemClickListener(item -> {
+            loadPosts(true); // Load recent posts with oldest posts at the top
+            return true;
+        });
 
 
 
-// Handle clicks on the profile icon
+        filterIcon.setOnClickListener(v -> popupMenu2.show());
+
+
+        // Handle clicks on the profile icon
         profileIcon = findViewById(R.id.profile_icon);
 
         //new
@@ -115,50 +154,8 @@ public class DashboardActivity extends AppCompatActivity {
 
         });  */
 
-// Handle clicks on the filter icon
-        filterIcon = findViewById(R.id.filter_icon);
 
-        PopupMenu popupMenu2 = new PopupMenu(this, filterIcon); // "this" refers to the context
-        // Inflate the menu resource you created
-        popupMenu2.getMenuInflater().inflate(R.menu.sort_filter, popupMenu2.getMenu());
 
-        // Set a click listener for Sort 1
-        popupMenu2.getMenu().findItem(R.id.sort_1).setOnMenuItemClickListener(item -> {
-            loadAllPosts();
-            return true;
-        });
-
-        // Set a click listener for Sort 2
-        popupMenu2.getMenu().findItem(R.id.sort_2).setOnMenuItemClickListener(item -> {
-
-            return true;
-        });
-
-        // Set a click listener for Sort 3
-        popupMenu2.getMenu().findItem(R.id.sort_3).setOnMenuItemClickListener(item -> {
-            loadRecentPosts();
-            return true;
-        });
-
-        // Set a click listener for Sort 4
-        popupMenu2.getMenu().findItem(R.id.sort_4).setOnMenuItemClickListener(item -> {
-//            loadOldPosts();
-            return true;
-        });
-
-        filterIcon.setOnClickListener(v -> popupMenu2.show());
-        //filterIcon.setOnClickListener(view -> {
-            // Add code to handle the filter icon click
-            // For example, show a filtering dialog
-            // showFilterDialog();
-        //});
-
-// Handle clicks on the search icon
-        searchIcon = findViewById(R.id.search_icon);
-        searchIcon.setOnClickListener(view -> {
-             Intent searchIntent = new Intent(DashboardActivity.this, search.class);
-             startActivity(searchIntent);
-        });
 
 
 
@@ -248,29 +245,53 @@ public class DashboardActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void loadRecentPosts() {
+    private void goToHomeFragment() {
+        loadPosts(false); // Load recent posts with newest posts at the top
+        HomeFragment fragment = new HomeFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.content, fragment, "");
+        fragmentTransaction.commit();
+    }
+
+    private void loadPosts(boolean sortByAscending) {
         // Assuming you are using Firebase as your backend
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
 
-        // Order the posts by timestamp in descending order to get the most recent ones first
-        Query query = databaseReference.orderByChild("timestamp").limitToLast(20); // Adjust the limit as needed
+        Query query;
+        if (sortByAscending) {
+            query = databaseReference.orderByChild("timestamp");
+        } else {
+            query = databaseReference.orderByChild("timestamp").limitToLast(20);
+        }
 
         query.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<ModelPost> recentPosts = new ArrayList<>();
+                List<ModelPost> posts = new ArrayList<>();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     ModelPost modelPost = snapshot.getValue(ModelPost.class);
                     if (modelPost != null) {
-                        recentPosts.add(modelPost);
+                        posts.add(modelPost);
                     }
                 }
 
-                // Update the UI with the recent posts
-                // For example, you can use an adapter to display them in a RecyclerView
-                // Make sure to handle the UI update on the main thread
+                if (adapterPosts == null) {
+                    // Initialize the adapter only if it's not initialized yet
+                    adapterPosts = new AdapterPosts(DashboardActivity.this, posts);
+                    recyclerViewPosts.setAdapter(adapterPosts);
+                }
+
+                // Update the adapter's posts list
+                adapterPosts.updatePosts(posts);
+
+                // Call notifyDataSetChanged() only if adapterPosts is not null
+                if (adapterPosts != null) {
+                    adapterPosts.notifyDataSetChanged();
+                }
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -281,126 +302,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 
 
-    private void loadAllPosts() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Posts");
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<ModelPost> allPosts = new ArrayList<>();
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    ModelPost modelPost = snapshot.getValue(ModelPost.class);
-                    if (modelPost != null) {
-                        allPosts.add(modelPost);
-                    }
-                }
-
-                // Now you have all posts in the 'allPosts' list
-                // Update your UI to display these posts, for example, using a RecyclerView and Adapter
-                // recyclerView.setAdapter(new YourPostsAdapter(allPosts));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle errors if needed
-            }
-        });
-    }
-
-
-   /* private NavigationBarView.OnItemSelectedListener selectedListener = new NavigationBarView.OnItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-            int itemId = menuItem.getItemId();
-
-            if (itemId == R.id.nav_home) {
-                actionBar.setTitle("Home");
-                HomeFragment fragment = new HomeFragment();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.content, fragment, "");
-                fragmentTransaction.commit();
-                return true;
-            } else if (itemId == R.id.nav_communities) {
-                actionBar.setTitle("Communities");
-                CommunitiesFragment fragment1 = new CommunitiesFragment();
-                FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction1.replace(R.id.content, fragment1);
-                fragmentTransaction1.commit();
-                return true;
-            } else if (itemId == R.id.nav_add) {
-                actionBar.setTitle("New Post");
-                AddFragment fragment2 = new AddFragment();
-                FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction2.replace(R.id.content, fragment2, "");
-                fragmentTransaction2.commit();
-                return true;
-            } else if (itemId == R.id.nav_notifications) {
-                actionBar.setTitle("Notifications");
-                NotificationsFragment listFragment = new NotificationsFragment();
-                FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction3.replace(R.id.content, listFragment, "");
-                fragmentTransaction3.commit();
-                return true;
-            } else if (itemId == R.id.nav_chat) {
-                actionBar.setTitle("Chat");
-                ChatFragment fragment4 = new ChatFragment();
-                FragmentTransaction fragmentTransaction4 = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction4.replace(R.id.content, fragment4, "");
-                fragmentTransaction4.commit();
-                return true;
-            }
-
-            return false;
-        }
-
-       /* public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-           switch (menuItem.getItemId()) {
-
-                case R.id.nav_home:
-                    actionBar.setTitle("Home");
-                    HomeFragment fragment = new HomeFragment();
-                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.content, fragment, "");
-                    fragmentTransaction.commit();
-                    return true;
-
-
-                case R.id.nav_communities:
-                    actionBar.setTitle("Communities");
-                    CommunitiesFragment fragment1 = new CommunitiesFragment();
-                    FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction1.replace(R.id.content, fragment1);
-                    fragmentTransaction1.commit();
-                    return true;
-
-                case R.id.nav_add:
-                    actionBar.setTitle("New Post");
-                    AddFragment fragment2 = new AddFragment();
-                    FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction2.replace(R.id.content, fragment2, "");
-                    fragmentTransaction2.commit();
-                    return true;
-
-                case R.id.nav_notifications:
-                    actionBar.setTitle("Notifications");
-                    NotificationsFragment listFragment = new NotificationsFragment();
-                    FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction3.replace(R.id.content, listFragment, "");
-                    fragmentTransaction3.commit();
-                    return true;
-
-                case R.id.nav_chat:
-                    actionBar.setTitle("Chat");
-                    ChatFragment fragment4 = new ChatFragment();
-                    FragmentTransaction fragmentTransaction4 = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction4.replace(R.id.content, fragment4, "");
-                    fragmentTransaction4.commit();
-                    return true;
-
-            }
-            return false;
-        } */
 
 
 }

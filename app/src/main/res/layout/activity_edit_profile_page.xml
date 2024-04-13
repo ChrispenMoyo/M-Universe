@@ -33,6 +33,7 @@
                 app:layout_collapseParallaxMultiplier="0.7"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Material3.CornerSizeFull" />
 
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"

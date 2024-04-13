@@ -2,14 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/sort_1"
-        android:title="All Posts" />
+        android:title="Recent Posts"
+        android:icon="@drawable/sort_down"
+        />
     <item
         android:id="@+id/sort_2"
-        android:title="Following" />
-    <item
-        android:id="@+id/sort_3"
-        android:title="Recent" />
-    <item
-        android:id="@+id/sort_4"
-        android:title="Old Posts" />
+        android:icon="@drawable/sort_up"
+        android:title="Old Posts"
+        />
 </menu>
+

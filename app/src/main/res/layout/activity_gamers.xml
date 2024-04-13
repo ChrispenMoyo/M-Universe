@@ -1,0 +1,953 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/community_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/convergences"
+            android:text="PUBG Gamers"
+            android:textColor="@color/main_blue"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="This community is for all the PUBG Gamers. Show us who is the KING of GAMING."
+            android:fontFamily="@font/convergences"
+            android:textColor="@color/black" />
+
+        <!-- Post 1 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="3dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="5dp"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/profilelayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/picturetv"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_profile2" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/unametv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/convergences"
+                            android:text="Bashith Ahamed"
+                            android:textColor="@color/black"
+                            android:textSize="18dp"/>
+
+                        <TextView
+                            android:id="@+id/utimetv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/convergences"
+                            android:text="13 mins ago " />
+
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/morebtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:contentDescription="TODO"
+                        android:src="@drawable/ic_more" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/descript"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="I just completed 31 kills and i am not stopping for anyone. Come and challenge me."
+                    android:fontFamily="@font/convergences"
+                    android:textColor="@color/black" />
+
+                <!-- Buttons -->
+
+                <ImageView
+                    android:id="@+id/pimagetv"
+                    android:layout_width="match_parent"
+                    android:layout_height="210dp"
+                    android:background="@color/white"
+
+                    android:src="@drawable/pubg_31_kills" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <!--Like -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/like"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_like"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true"/>
+
+                            <TextView
+                                android:id="@+id/likeCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/like"
+                                android:layout_marginStart="5dp"
+                                android:text="38"
+                                android:fontFamily="@font/convergences"
+                                android:textColor="@color/main_blue" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <!-- Comment -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/comment"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/ic_comment" />
+
+                            <TextView
+                                android:id="@+id/commentCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/comment"
+                                android:layout_marginStart="5dp"
+                                android:text="20"
+                                android:fontFamily="@font/convergences"
+                                android:textColor="@color/main_blue" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <!-- Repost -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/repost"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_repost"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true"/>
+
+                            <TextView
+                                android:id="@+id/repostCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/repost"
+                                android:layout_marginStart="5dp"
+                                android:text="17"
+                                android:fontFamily="@font/convergences"
+                                android:textColor="@color/main_blue" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <!-- Share -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/share"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_share"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true"/>
+
+                            <TextView
+                                android:id="@+id/shareCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/share"
+                                android:layout_marginStart="5dp"
+                                android:text="6"
+                                android:fontFamily="@font/convergences"
+                                android:textColor="@color/main_blue" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Post 2 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="3dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="5dp"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/profilelayout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/picturetv1"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_profile2" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/unametv1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/convergences"
+                            android:text="Zane Kilonzo"
+                            android:textColor="@color/black"
+                            android:textSize="18dp"/>
+
+                        <TextView
+                            android:id="@+id/utimetv1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/convergences"
+                            android:text="56 mins ago" />
+
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/morebtn1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:contentDescription="TODO"
+                        android:src="@drawable/ic_more" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/descript1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/convergences"
+                    android:text="Ready or not here i come, make sure you are prepared for war."
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/pimagetv1"
+                    android:layout_width="match_parent"
+                    android:layout_height="210dp"
+                    android:src="@drawable/pubg_lambo"
+                    android:background="@color/white" />
+
+                <!-- Buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <!--Like -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/like1"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_like"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true"/>
+
+                            <TextView
+                                android:id="@+id/likeCount1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/like1"
+                                android:layout_marginStart="5dp"
+                                android:text="65"
+                                android:fontFamily="@font/convergences"
+                                android:textColor="@color/main_blue" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <!-- Comment -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/comment1"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/ic_comment" />
+
+                            <TextView
+                                android:id="@+id/commentCount1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/comment1"
+                                android:layout_marginStart="5dp"
+                                android:text="2"
+                                android:fontFamily="@font/convergences"
+                                android:textColor="@color/main_blue" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <!-- Repost -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/repost1"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_repost"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true"/>
+
+                            <TextView
+                                android:id="@+id/repostCount1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/repost1"
+                                android:layout_marginStart="5dp"
+                                android:text="9"
+                                android:fontFamily="@font/convergences"
+                                android:textColor="@color/main_blue" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <!-- Share -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/share1"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_share"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true"/>
+
+                            <TextView
+                                android:id="@+id/shareCount1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/share1"
+                                android:layout_marginStart="5dp"
+                                android:text="10"
+                                android:fontFamily="@font/convergences"
+                                android:textColor="@color/main_blue" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Post 3 -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="3dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="5dp"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/profilelayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/picturetv2"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_profile2" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/unametv2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/convergences"
+                            android:text="Dhruv Vitlani"
+                            android:textColor="@color/black"
+                            android:textSize="18dp" />
+
+                        <TextView
+                            android:id="@+id/utimetv2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/convergences"
+                            android:text="3 hrs ago" />
+
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/morebtn2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:contentDescription="TODO"
+                        android:src="@drawable/ic_more" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/descript2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Welcome to the Ultimate Player's Unknown Battle Grounds mobile, the best game so far."
+                    android:fontFamily="@font/convergences"
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/pimagetv2"
+                    android:layout_width="match_parent"
+                    android:layout_height="210dp"
+                    android:src="@drawable/pubg_mobile_"
+                    android:background="@color/white" />
+
+                <!-- Buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <!--Like -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/like2"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_like"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true"/>
+
+                            <TextView
+                                android:id="@+id/likeCount2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/like2"
+                                android:layout_marginStart="5dp"
+                                android:text="50"
+                                android:fontFamily="@font/convergences"
+                                android:textColor="@color/main_blue" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <!-- Comment -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/comment2"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/ic_comment" />
+
+                            <TextView
+                                android:id="@+id/commentCount2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/comment2"
+                                android:layout_marginStart="5dp"
+                                android:text="6"
+                                android:fontFamily="@font/convergences"
+                                android:textColor="@color/main_blue" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <!-- Repost -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/repost2"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_repost"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true"/>
+
+                            <TextView
+                                android:id="@+id/repostCount2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/repost2"
+                                android:layout_marginStart="5dp"
+                                android:text="11"
+                                android:fontFamily="@font/convergences"
+                                android:textColor="@color/main_blue" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <!-- Share -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/share2"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_share"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true"/>
+
+                            <TextView
+                                android:id="@+id/shareCount2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/share2"
+                                android:layout_marginStart="5dp"
+                                android:text="5"
+                                android:fontFamily="@font/convergences"
+                                android:textColor="@color/main_blue" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Post 4 -->
+        <androidx.cardview.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="3dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="5dp"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/profilelayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/picturetv3"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_profile2" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/unametv3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/convergences"
+                            android:text="Meet Bhuva"
+                            android:textColor="@color/black"
+                            android:textSize="18dp"/>
+
+                        <TextView
+                            android:id="@+id/utimetv3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/convergences"
+                            android:text="7 hrs ago" />
+
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/morebtn3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:contentDescription="TODO"
+                        android:src="@drawable/ic_more" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/descript3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Did you know that the PUBG Get Back is now available? Go and check it out."
+                    android:fontFamily="@font/convergences"
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/pimagetv3"
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp"
+                    android:src="@drawable/pubg_get_back"
+                    android:background="@color/white" />
+
+                <!-- Buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <!--Like -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/like3"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_like"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true"/>
+
+                            <TextView
+                                android:id="@+id/likeCount3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/like3"
+                                android:layout_marginStart="5dp"
+                                android:text="45"
+                                android:fontFamily="@font/convergences"
+                                android:textColor="@color/main_blue" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <!-- Comment -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/comment3"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/ic_comment" />
+
+                            <TextView
+                                android:id="@+id/commentCount3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/comment3"
+                                android:layout_marginStart="5dp"
+                                android:text="8"
+                                android:fontFamily="@font/convergences"
+                                android:textColor="@color/main_blue" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <!-- Repost -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/repost3"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_repost"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true"/>
+
+                            <TextView
+                                android:id="@+id/repostCount3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/repost3"
+                                android:layout_marginStart="5dp"
+                                android:text="27"
+                                android:fontFamily="@font/convergences"
+                                android:textColor="@color/main_blue" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <!-- Share -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:id="@+id/share3"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_share"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentStart="true"/>
+
+                            <TextView
+                                android:id="@+id/shareCount3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toEndOf="@id/share3"
+                                android:layout_marginStart="5dp"
+                                android:text="18"
+                                android:fontFamily="@font/convergences"
+                                android:textColor="@color/main_blue" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
+</ScrollView>

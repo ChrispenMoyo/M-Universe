@@ -61,7 +61,7 @@ public class EditProfilePage extends AppCompatActivity {
     String uid;
     ImageView set;
     Button btnlogout;
-    TextView profilepic, editname, editpassword;
+    TextView profilepic, editname, editpassword, profileName;
     ProgressDialog pd;
     private static final int CAMERA_REQUEST = 100;
     private static final int STORAGE_REQUEST = 200;
@@ -110,6 +110,8 @@ public class EditProfilePage extends AppCompatActivity {
         set = findViewById(R.id.setting_profile_image);
         pd.setCanceledOnTouchOutside(false);
         editpassword = findViewById(R.id.changepassword);
+        //profileName = findViewById(R.id.setting_profile_name);
+        //profileName.setText("User Name");
 
 
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -119,6 +121,10 @@ public class EditProfilePage extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+
+                    // Retrieving Data from firebase
+                    String name = "" + dataSnapshot1.child("uname").getValue();
+                    profileName.setText(name);
 
                     if (dataSnapshot1.child("image").exists()) {
                         String image = "" + dataSnapshot1.child("image").getValue();

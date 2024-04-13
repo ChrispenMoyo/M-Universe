@@ -3,7 +3,8 @@ package com.example.m_universe;
 public class User {
     private String grNum;
     private String email;
-    private String userId;
+    private String uid;
+    private String uimage;
 
     private String uname;
 
@@ -13,34 +14,51 @@ public class User {
     }
 
     // Parameterized constructor
-    public User(String grNum, String email, String userId, String uname) {
+    public User(String grNum, String email, String uid, String uname, String uimage) {
         this.grNum = grNum;
         this.email = email;
-        this.userId = userId;
+        this.uid = uid;
         this.uname = uname;
+        this.uimage = uimage;
     }
 
     public String getGrNum() {
         return grNum;
     }
 
-    public void setGrNum(String grNum) { this.grNum = grNum;}
+    public void setGrNum(String grNum) {
+        this.grNum = grNum;
+    }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) { this.email = email;}
-
-    public String getUserId() {
-        return userId;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setUserId(String userId) { this.userId = userId;}
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getImage() {
+        return uimage;
+    }
+
+    public void setImage(String uimage) {
+        this.uimage = uimage;
+    }
 
     public String getUname() {
         return uname;
     }
 
-    public void setUname(String uname) { this.uname = uname;}
+    public void setUname(String uname) {
+        this.uname = uname;
+    }
 }
